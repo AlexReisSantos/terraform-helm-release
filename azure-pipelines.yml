@@ -30,7 +30,7 @@ stages:
           name: sshKey
           displayName: 'Download SSH Key'
           inputs:
-            secureFile: 'kantarware_rsa'
+            secureFile: 'github'
 
         - task: Bash@3
           displayName: PushToGithub
@@ -42,7 +42,7 @@ stages:
               mkdir ~/.ssh && mv $(sshKey.secureFilePath) ~/.ssh/id_rsa
               chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-              git remote add github git@github.com:guifabmello/terraform-helm-release.git
+              git remote add github git@github.com:AlexReisSantos/terraform-helm-release.git
               BRANCH_NAME=$(echo $(Build.SourceBranch) | cut -d/ -f3-)
               git checkout ${BRANCH_NAME} 
               git push -u github ${BRANCH_NAME}
@@ -50,8 +50,8 @@ stages:
         - task: GitHubRelease@1
           displayName: PushRelease
           inputs:
-            gitHubConnection: 'guifabmello-access-token'
-            repositoryName: 'guifabmello/terraform-helm-release'
+            gitHubConnection: 'githubkantarmedia-access-token'
+            repositoryName: 'AlexReisSantos/terraform-helm-release'
             title: $(Build.BuildNumber)
             action: 'create'
             tagSource: 'userSpecifiedTag'
